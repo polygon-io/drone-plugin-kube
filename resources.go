@@ -154,7 +154,8 @@ func ApplyConfigMap(clientset *kubernetes.Clientset, namespace string, configMap
 			    return err
 			}
 
-			configMapData[relativePath] = string(fileContents)
+			// Replace slashes with dashes because kube doesn't like em
+			configMapData[strings.ReplaceAll(relativePath, "/", "-")] = string(fileContents)
 			return nil
 		})
 
